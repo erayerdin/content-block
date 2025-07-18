@@ -1,0 +1,15 @@
+{
+    "explorerExclude.backup": {},
+    "files.exclude": {
+        "**/.DS_Store": true,
+        "**/.git": true,
+        "**/.hg": true,
+        "**/.svn": true,
+        "**/Thumbs.db": true,
+        ".wxt": true,
+        ".output": true,
+        "build": true,
+        "node_modules": true
+    },
+    "licenser.license": "GPLv3",
+}
