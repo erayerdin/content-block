@@ -1,7 +1,10 @@
-import { useState } from 'react';
-import reactLogo from '@/assets/react.svg';
-import wxtLogo from '/wxt.svg';
-import './App.css';
+import { useState } from "react";
+
+import reactLogo from "@/assets/react.svg";
+
+import "./App.css";
+
+import wxtLogo from "/wxt.svg";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -9,16 +12,16 @@ function App() {
   return (
     <>
       <div>
-        <a href="https://wxt.dev" target="_blank">
-          <img src={wxtLogo} className="logo" alt="WXT logo" />
+        <a href="https://wxt.dev" rel="noreferrer" target="_blank">
+          <img alt="WXT logo" className="logo" src={wxtLogo} />
         </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
+        <a href="https://react.dev" rel="noreferrer" target="_blank">
+          <img alt="React logo" className="logo react" src={reactLogo} />
         </a>
       </div>
       <h1>WXT + React</h1>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
+        <button onClick={() => setCount((count) => count + 1)} type="button">
           count is {count}
         </button>
         <p>
