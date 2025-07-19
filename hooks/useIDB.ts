@@ -15,13 +15,15 @@
 // You should have received a copy of the GNU General Public License
 // along with content-block.  If not, see <https://www.gnu.org/licenses/>.
 
-import { HeroUIProvider } from "@heroui/react";
-import { FC } from "react";
+import type { IDBPDatabase } from "idb";
 
-import ChildrenProps from "@/types/ChildrenProps";
+import { useContext } from "react";
 
-const GlobalProvider: FC<ChildrenProps> = ({ children }) => {
-  return <HeroUIProvider>{children}</HeroUIProvider>;
+import { IDBContext } from "@/providers/IDBProvider";
+
+const useIDB = (): IDBPDatabase => {
+  const idb = useContext(IDBContext);
+  return idb!;
 };
 
-export default GlobalProvider;
+export default useIDB;
