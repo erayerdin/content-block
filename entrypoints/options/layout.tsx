@@ -1,0 +1,60 @@
+// Copyright (C) 2025 Eray Erdin
+//
+// This file is part of content-block.
+//
+// content-block is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// content-block is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with content-block.  If not, see <https://www.gnu.org/licenses/>.
+
+import { Navbar, NavbarContent, NavbarItem } from "@heroui/react";
+import { Link, Outlet, useLocation } from "react-router";
+
+const OptionsLayout = () => {
+  const location = useLocation();
+
+  const links = [
+    {
+      isActive: location.pathname === "/",
+      label: "Home",
+      to: "/",
+    },
+    {
+      isActive: location.pathname === "/filters",
+      label: "Filters",
+      to: "/filters",
+    },
+    {
+      isActive: location.pathname === "/about",
+      label: "About",
+      to: "/about",
+    },
+  ];
+
+  return (
+    <div className="flex flex-col">
+      <Navbar>
+        <NavbarContent>
+          {links.map(({ isActive, label, to }) => (
+            <NavbarItem isActive={isActive} key={to}>
+              <Link to={to}>{label}</Link>
+            </NavbarItem>
+          ))}
+        </NavbarContent>
+      </Navbar>
+      <div className="px-4 pb-4">
+        <Outlet />
+      </div>
+    </div>
+  );
+};
+
+export default OptionsLayout;
