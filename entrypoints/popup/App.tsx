@@ -15,14 +15,16 @@
 // You should have received a copy of the GNU General Public License
 // along with content-block.  If not, see <https://www.gnu.org/licenses/>.
 
-import { Tooltip } from "@heroui/react";
+import { Button, Tooltip } from "@heroui/react";
 import { CircleQuestionMarkIcon, FunnelIcon, PowerIcon } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const BottomBar = () => {
+  const { t } = useTranslation();
+
   return (
     <div className="flex gap-4 justify-evenly bg-gray-300 py-2">
-      <Tooltip content="View and edit filters.">
-        {/* TODO: localize this */}
+      <Tooltip content={t("view_and_edit_filters")}>
         <button
           onClick={() => {
             browser.tabs.create({
@@ -35,8 +37,7 @@ const BottomBar = () => {
           <FunnelIcon size={20} />
         </button>
       </Tooltip>
-      <Tooltip content="About this extension">
-        {/* TODO: localize this */}
+      <Tooltip content={t("about_this_extension")}>
         <button
           onClick={() => {
             browser.tabs.create({
@@ -61,7 +62,17 @@ const App = () => {
       <div />
       <div className="flex flex-col items-stretch p-4">
         <div className="flex flex-col gap-4 items-center">
-          <PowerIcon color="green" size={60} />
+          <Button
+            className="text-white size-16"
+            onPress={() => {
+              // TODO: Implement this
+              throw new Error("Not implemented");
+            }}
+            type="button"
+            variant="shadow"
+          >
+            <PowerIcon />
+          </Button>
           <p>{url.hostname}</p>
         </div>
       </div>

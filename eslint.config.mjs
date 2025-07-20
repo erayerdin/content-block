@@ -32,7 +32,8 @@ export default tseslint.config(
     },
   },
   {
-    files: ["entrypoints/**/*.{ts,tsx}"],
+    files: ["**/*.{ts,tsx}"],
+    ignores: ["node_modules", ".output", ".wxt"],
     ...react.configs.flat.all,
     rules: {
       ...react.configs.flat.all.rules,

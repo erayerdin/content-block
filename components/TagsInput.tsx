@@ -3,6 +3,7 @@
 import { Chip, Input, type InputProps } from "@heroui/react";
 import clsx from "clsx";
 import React, { type KeyboardEvent, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 interface TagsInputProps extends InputProps {
   readonly data: { keywords: string[] };
@@ -14,6 +15,8 @@ const TagsInput: React.FC<TagsInputProps> = ({
   onTagsChange,
   ...rest
 }) => {
+  const { t } = useTranslation();
+
   const [tags, setTags] = React.useState<string[]>(
     data?.keywords ? data?.keywords : data?.keywords || []
   );
@@ -56,7 +59,7 @@ const TagsInput: React.FC<TagsInputProps> = ({
   return (
     <div className={clsx(rest.className, "flex flex-wrap items-center gap-2")}>
       <Input
-        placeholder="Press Enter to add" // TODO: localize
+        placeholder={t("press_enter_to_add")}
         // eslint-disable-next-line react/jsx-props-no-spreading
         {...rest}
         className={clsx("flex-grow")}

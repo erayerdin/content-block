@@ -15,14 +15,15 @@
 // You should have received a copy of the GNU General Public License
 // along with content-block.  If not, see <https://www.gnu.org/licenses/>.
 
+import i18next from "i18next";
 import * as z from "zod";
 
 export const LLMProviderTypes = ["free", "api"] as const;
 export const LLMProviderTypeSchema = z.enum(LLMProviderTypes);
 export type LLMProviderType = z.infer<typeof LLMProviderTypeSchema>;
 export const LLMProviderTypeMessages: Record<LLMProviderType, string> = {
-  api: "API Key", // TODO: localize
-  free: "Free", // TODO: localize
+  api: i18next.t("api"),
+  free: i18next.t("free"),
 };
 
 export const LLMProviders = ["google", "openai"] as const;

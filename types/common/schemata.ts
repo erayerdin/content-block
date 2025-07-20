@@ -15,14 +15,15 @@
 // You should have received a copy of the GNU General Public License
 // along with content-block.  If not, see <https://www.gnu.org/licenses/>.
 
+import i18next from "i18next";
 import * as z from "zod";
 import { type ZodTypeAny } from "zod";
 
 export const NonBlankString = z.string().refine((v) => v.trim().length > 0, {
-  message: "This must not be blank.", // TODO: localize
+  message: i18next.t("this_must_not_be_blank"),
 });
 
 export const NonEmptyArray = <T extends ZodTypeAny>(schema: T) =>
   z.array(schema).refine((v) => v.length > 0, {
-    message: "This must not be empty.", // TODO: localize
+    message: i18next.t("this_must_not_be_empty"),
   });

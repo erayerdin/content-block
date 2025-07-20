@@ -21,6 +21,7 @@ import { FC } from "react";
 
 import ChildrenProps from "@/types/ChildrenProps";
 
+import I18NextProvider from "./I18NextProvider";
 import IDBProvider from "./IDBProvider";
 import LoadingProvider from "./LoadingProvider";
 
@@ -31,7 +32,9 @@ const GlobalProvider: FC<ChildrenProps> = ({ children }) => {
     <HeroUIProvider>
       <QueryClientProvider client={queryClient}>
         <IDBProvider>
-          <LoadingProvider>{children}</LoadingProvider>
+          <I18NextProvider>
+            <LoadingProvider>{children}</LoadingProvider>
+          </I18NextProvider>
         </IDBProvider>
       </QueryClientProvider>
     </HeroUIProvider>

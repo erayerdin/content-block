@@ -20,11 +20,13 @@ import { type FC, useContext, useEffect, useMemo, useState } from "react";
 
 import ChildrenProps from "@/types/ChildrenProps";
 
+import { I18NextContext } from "./I18NextProvider";
 import { IDBContext } from "./IDBProvider";
 
 const LoadingProvider: FC<ChildrenProps> = ({ children }) => {
   const idb = useContext(IDBContext);
-  const dependencies = useMemo(() => [idb], [idb]);
+  const i18next = useContext(I18NextContext);
+  const dependencies = useMemo(() => [i18next, idb], [i18next, idb]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {

@@ -1,0 +1,8 @@
+hello_world = "Hello World"
+this_must_not_be_blank = "This must not be blank."
+this_must_not_be_empty = "This must not be empty."
+press_enter_to_add = "Press Enter to add"
+view_and_edit_filters = "View and edit filters."
+about_this_extension = "About this extension"
+api_key = "API Key"
+free = "Free"
