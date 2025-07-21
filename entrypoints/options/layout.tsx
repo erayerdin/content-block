@@ -16,25 +16,22 @@
 // along with content-block.  If not, see <https://www.gnu.org/licenses/>.
 
 import { Navbar, NavbarContent, NavbarItem } from "@heroui/react";
+import { useTranslation } from "react-i18next";
 import { Link, Outlet, useLocation } from "react-router";
 
 const OptionsLayout = () => {
+  const { t } = useTranslation();
   const location = useLocation();
 
   const links = [
     {
-      isActive: location.pathname === "/",
-      label: "Home",
-      to: "/",
-    },
-    {
-      isActive: location.pathname === "/filters",
-      label: "Filters",
+      isActive: location.pathname.startsWith("/filter"),
+      label: t("filters"),
       to: "/filters",
     },
     {
       isActive: location.pathname === "/about",
-      label: "About",
+      label: t("about"),
       to: "/about",
     },
   ];

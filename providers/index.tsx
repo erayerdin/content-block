@@ -24,6 +24,7 @@ import ChildrenProps from "@/types/ChildrenProps";
 import I18NextProvider from "./I18NextProvider";
 import IDBProvider from "./IDBProvider";
 import LoadingProvider from "./LoadingProvider";
+import ZodProvider from "./ZodProvider";
 
 const queryClient = new QueryClient();
 
@@ -33,7 +34,9 @@ const GlobalProvider: FC<ChildrenProps> = ({ children }) => {
       <QueryClientProvider client={queryClient}>
         <IDBProvider>
           <I18NextProvider>
-            <LoadingProvider>{children}</LoadingProvider>
+            <ZodProvider>
+              <LoadingProvider>{children}</LoadingProvider>
+            </ZodProvider>
           </I18NextProvider>
         </IDBProvider>
       </QueryClientProvider>

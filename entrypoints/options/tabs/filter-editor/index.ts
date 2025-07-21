@@ -15,8 +15,6 @@
 // You should have received a copy of the GNU General Public License
 // along with content-block.  If not, see <https://www.gnu.org/licenses/>.
 
-const FiltersTab = () => {
-  return <div>FiltersTab</div>;
-};
+import FilterEditorPage from "./page";
 
-export default FiltersTab;
+export default FilterEditorPage;

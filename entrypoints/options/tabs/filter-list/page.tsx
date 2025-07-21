@@ -15,6 +15,32 @@
 // You should have received a copy of the GNU General Public License
 // along with content-block.  If not, see <https://www.gnu.org/licenses/>.
 
-import FiltersTab from "./tab";
+import { Button } from "@heroui/react";
+import { PlusIcon } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router";
 
-export default FiltersTab;
+import { defaultFilter } from "@/types/filter";
+
+const FilterListPage = () => {
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+
+  return (
+    <div className="flex flex-col gap-4">
+      <Button
+        onPress={async () => {
+          const filter = defaultFilter();
+          await navigate(`/filter/${filter.id}`);
+        }}
+        size="sm"
+        type="button"
+      >
+        <PlusIcon />
+        <span>{t("add_filter")}</span>
+      </Button>
+    </div>
+  );
+};
+
+export default FilterListPage;

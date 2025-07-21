@@ -15,37 +15,18 @@
 // You should have received a copy of the GNU General Public License
 // along with content-block.  If not, see <https://www.gnu.org/licenses/>.
 
-import type { IDBPDatabase } from "idb";
+import { IDBPDatabase } from "idb";
 
-import {
-  useMutation,
-  type UseMutationResult,
-  useQueryClient,
-} from "@tanstack/react-query";
-
-import type { Filter } from "@/types/filter";
+import { Filter } from "@/types/filter";
 
 type Params = {
+  id: string;
   idb: IDBPDatabase;
 };
 
-type Return = UseMutationResult<void, unknown, Filter>;
-
-const useCreateFilter = ({ idb }: Params): Return => {
-  const queryClient = useQueryClient();
-  const mutation = useMutation({
-    mutationFn: async (filter: Filter) => {
-      await idb.put("filters", filter, filter.id);
-    },
-    onSuccess: async () => {
-      await Promise.all([
-        queryClient.invalidateQueries({ queryKey: ["list-filter"] }),
-        queryClient.invalidateQueries({ queryKey: ["filter"] }),
-      ]);
-    },
-  });
-
-  return mutation;
+const getFilter = async ({ id, idb }: Params): Promise<Filter | null> => {
+  const filter = await idb.get("filters", id);
+  return filter ? filter : null;
 };
 
-export default useCreateFilter;
+export default getFilter;

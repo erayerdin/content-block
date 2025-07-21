@@ -5,8 +5,9 @@ import { HashRouter, Navigate, Route, Routes } from "react-router";
 import GlobalProvider from "@/providers/index.tsx";
 
 import OptionsLayout from "./layout";
-import AboutTab from "./tabs/about";
-import FiltersTab from "./tabs/filters";
+import AboutPage from "./tabs/about";
+import FilterEditorPage from "./tabs/filter-editor";
+import FilterListPage from "./tabs/filter-list";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -15,8 +16,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         <Routes>
           <Route element={<OptionsLayout />}>
             <Route element={<Navigate replace to="/about" />} path="/" />
-            <Route element={<FiltersTab />} path="/filters" />
-            <Route element={<AboutTab />} path="/about" />
+            <Route element={<FilterListPage />} path="/filters" />
+            <Route element={<FilterEditorPage />} path="/filter/:id" />
+            <Route element={<AboutPage />} path="/about" />
           </Route>
         </Routes>
       </HashRouter>

@@ -15,8 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with content-block.  If not, see <https://www.gnu.org/licenses/>.
 
-const AboutTab = () => {
+const AboutPage = () => {
   return <div>AboutTab</div>;
 };
 
-export default AboutTab;
+export default AboutPage;

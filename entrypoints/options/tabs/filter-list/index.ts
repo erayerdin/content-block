@@ -15,6 +15,6 @@
 // You should have received a copy of the GNU General Public License
 // along with content-block.  If not, see <https://www.gnu.org/licenses/>.
 
-import AboutPage from "./page";
+import FilterListPage from "./page";
 
-export default AboutPage;
+export default FilterListPage;
