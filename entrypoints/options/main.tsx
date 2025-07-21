@@ -5,9 +5,9 @@ import { HashRouter, Navigate, Route, Routes } from "react-router";
 import GlobalProvider from "@/providers/index.tsx";
 
 import OptionsLayout from "./layout";
-import AboutPage from "./tabs/about";
-import FilterEditorPage from "./tabs/filter-editor";
-import FilterListPage from "./tabs/filter-list";
+import AboutPage from "./pages/about";
+import FilterEditorPage from "./pages/filter-editor";
+import FilterListPage from "./pages/filter-list";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
