@@ -62,19 +62,19 @@ const FilterEditorPage: FC = () => {
   return (
     <div className="flex flex-col gap-2 p-4">
       <Input
-        defaultValue={draft.title}
         errorMessage={getFirstError("title")}
         isInvalid={hasError("title")}
         label={t("title")}
-        onValueChange={(val) => onChange({ title: val.trim() })}
+        onValueChange={(val) => onChange({ title: val })}
+        value={draft.title}
       />
 
       <Input
-        defaultValue={draft.description}
         errorMessage={getFirstError("description")}
         isInvalid={hasError("description")}
         label={t("description")}
-        onValueChange={(val) => onChange({ description: val.trim() })}
+        onValueChange={(val) => onChange({ description: val })}
+        value={draft.description}
       />
 
       <TagsInput
@@ -82,9 +82,7 @@ const FilterEditorPage: FC = () => {
         errorMessage={getFirstError("domains")}
         isInvalid={hasError("domains")}
         label={t("domains")}
-        onTagsChange={(tags) =>
-          onChange({ domains: tags.map((t) => t.trim()) })
-        }
+        onTagsChange={(tags) => onChange({ domains: tags.map((t) => t) })}
         placeholder={
           t("x_and_y", {
             x: t("press_enter_to_add"),
@@ -98,17 +96,15 @@ const FilterEditorPage: FC = () => {
         errorMessage={getFirstError("selectors")}
         isInvalid={hasError("selectors")}
         label={t("selectors")}
-        onTagsChange={(tags) =>
-          onChange({ selectors: tags.map((t) => t.trim()) })
-        }
+        onTagsChange={(tags) => onChange({ selectors: tags.map((t) => t) })}
       />
 
       <Input
-        defaultValue={draft.prompt}
         errorMessage={getFirstError("prompt")}
         isInvalid={hasError("prompt")}
         label={t("prompt")}
-        onValueChange={(val) => onChange({ prompt: val.trim() })}
+        onValueChange={(val) => onChange({ prompt: val })}
+        value={draft.prompt}
       />
 
       <Button

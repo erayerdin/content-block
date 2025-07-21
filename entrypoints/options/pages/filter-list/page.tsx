@@ -30,7 +30,7 @@ import {
   ModalHeader,
   Spinner,
 } from "@heroui/react";
-import { PlusIcon, XIcon } from "lucide-react";
+import { PenIcon, PlusIcon, XIcon } from "lucide-react";
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
@@ -135,7 +135,17 @@ const FilterListPage = () => {
                       <p className="text-lg">{filter.title}</p>
                       <p>{filter.description}</p>
                     </div>
-                    <DeletionDialog filter={filter} />
+                    <div className="flex gap-2">
+                      <button
+                        onClick={async () => {
+                          await navigate(`/filter/${filter.id}`);
+                        }}
+                        type="button"
+                      >
+                        <PenIcon />
+                      </button>
+                      <DeletionDialog filter={filter} />
+                    </div>
                   </CardHeader>
                   <Divider />
                   <CardBody>
