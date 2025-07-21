@@ -89,7 +89,7 @@ const FilterEditorPage: FC = () => {
           t("x_and_y", {
             x: t("press_enter_to_add"),
             y: t("you_can_use_regex").toLowerCase(),
-          }) + ".f"
+          }) + "."
         }
       />
 
