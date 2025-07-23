@@ -2,7 +2,8 @@
 
 import { Chip, Input, type InputProps } from "@heroui/react";
 import clsx from "clsx";
-import React, { type KeyboardEvent, useState } from "react";
+// components/TagsInput.tsx
+import { type FC, type KeyboardEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 interface TagsInputProps extends InputProps {
@@ -10,69 +11,61 @@ interface TagsInputProps extends InputProps {
   readonly onTagsChange?: (tags: string[]) => void;
 }
 
-const TagsInput: React.FC<TagsInputProps> = ({
-  data,
-  onTagsChange,
-  ...rest
-}) => {
+const TagsInput: FC<TagsInputProps> = ({ data, onTagsChange, ...rest }) => {
   const { t } = useTranslation();
 
-  const [tags, setTags] = React.useState<string[]>(
-    data?.keywords ? data?.keywords : data?.keywords || []
-  );
-  const [inputValue, setInputValue] = useState<string>("");
+  const [tags, setTags] = useState<string[]>(data.keywords);
+  useEffect(() => {
+    setTags(data.keywords);
+  }, [data.keywords]);
+
+  const [inputValue, setInputValue] = useState("");
+
+  const pushTag = (tag: string) => {
+    const newTags = [...tags, tag];
+    setTags(newTags);
+    onTagsChange?.(newTags);
+  };
+
+  const popTag = () => {
+    const newTags = tags.slice(0, -1);
+    setTags(newTags);
+    onTagsChange?.(newTags);
+  };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      const trimmedValue = inputValue.trim();
-
-      if (trimmedValue && !tags.includes(trimmedValue)) {
-        const newTags = [...tags, trimmedValue];
-        setTags(newTags);
-
-        if (onTagsChange) onTagsChange(newTags);
-
+      const val = inputValue.trim();
+      if (val && !tags.includes(val)) {
+        pushTag(val);
         setInputValue("");
       }
+    } else if (e.key === "Backspace" && inputValue === "" && tags.length > 0) {
+      popTag();
     }
-
-    if (e.key === "Backspace" && !inputValue && tags.length > 0) {
-      const updatedTags = Array.from(
-        new Set(tags.map((t) => t.trim().toLowerCase()))
-      );
-      setTags(updatedTags);
-      if (onTagsChange) onTagsChange(updatedTags);
-    }
-  };
-
-  const handleRemoveTag = (index: number) => {
-    const updatedTags = tags.filter((_, i) => i !== index);
-    setTags(updatedTags);
-    if (onTagsChange) onTagsChange(updatedTags);
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
   };
 
   return (
     <div className={clsx(rest.className, "flex flex-wrap items-center gap-2")}>
       <Input
-        placeholder={t("press_enter_to_add")}
         // eslint-disable-next-line react/jsx-props-no-spreading
         {...rest}
-        className={clsx("flex-grow")}
+        className="flex-grow"
         isClearable={false}
-        onChange={handleInputChange}
+        onChange={(e) => setInputValue(e.currentTarget.value)}
         onKeyDown={handleKeyDown}
+        placeholder={t("press_enter_to_add")}
         value={inputValue}
       />
-      {tags.map((tag, index) => (
+      {tags.map((tag, idx) => (
         <Chip
-          className="flex p-2 mb-1"
           key={tag}
-          onClose={() => handleRemoveTag(index)}
+          onClose={() => {
+            const newTags = tags.filter((_, i) => i !== idx);
+            setTags(newTags);
+            onTagsChange?.(newTags);
+          }}
         >
           {tag}
         </Chip>
