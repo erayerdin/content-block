@@ -23,79 +23,18 @@ import {
   CardHeader,
   Chip,
   Divider,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
   Spinner,
 } from "@heroui/react";
-import { PenIcon, PlusIcon, XIcon } from "lucide-react";
-import { FC } from "react";
+import { PenIcon, PlusIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
 import { match } from "ts-pattern";
 
-import useDeleteFilter from "@/hooks/data/useDeleteFilter";
 import useListFilter from "@/hooks/data/useListFilter";
-import { defaultFilter, Filter } from "@/types/filter";
+import { defaultFilter } from "@/types/filter";
 
-const DeletionDialog: FC<{ readonly filter: Filter }> = ({ filter }) => {
-  const idb = useIDB();
-  const { t } = useTranslation();
-  const [deletionDialog, setDeletionDialog] = useState<null | string>(null);
-  const deleteFilter = useDeleteFilter({ idb });
-
-  return (
-    <>
-      <Modal
-        isOpen={deletionDialog === filter.id}
-        onOpenChange={(isOpen) => {
-          if (isOpen) {
-            setDeletionDialog(filter.id);
-          } else {
-            setDeletionDialog(null);
-          }
-        }}
-      >
-        <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader>
-                {t("are_you_sure_to_remove_filter_x", {
-                  x: filter.title,
-                })}
-              </ModalHeader>
-              <ModalBody>{t("this_action_cannot_be_undone")}</ModalBody>
-              <ModalFooter>
-                <Button
-                  color="danger"
-                  onPress={async () => {
-                    await deleteFilter.mutateAsync(filter.id);
-                    onClose();
-                  }}
-                >
-                  {t("remove_this_filter")}
-                </Button>
-                <Button color="primary" onPress={onClose}>
-                  {t("cancel")}
-                </Button>
-              </ModalFooter>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
-      <button
-        onClick={() => {
-          setDeletionDialog(filter.id);
-        }}
-        type="button"
-      >
-        <XIcon />
-      </button>
-    </>
-  );
-};
+import DeletionDialog from "./components/DeletionDialog";
+import ImportDialog from "./components/ImportDialog";
 
 const FilterListPage = () => {
   const idb = useIDB();
@@ -105,16 +44,19 @@ const FilterListPage = () => {
 
   return (
     <div className="flex flex-col gap-4">
-      <Button
-        onPress={async () => {
-          const filter = defaultFilter();
-          await navigate(`/filter/${filter.id}`);
-        }}
-        type="button"
-      >
-        <PlusIcon />
-        <span>{t("add_filter")}</span>
-      </Button>
+      <div className="flex gap-2 *:grow">
+        <Button
+          onPress={async () => {
+            const filter = defaultFilter();
+            await navigate(`/filter/${filter.id}`);
+          }}
+          type="button"
+        >
+          <PlusIcon />
+          <span>{t("add_filter")}</span>
+        </Button>
+        <ImportDialog />
+      </div>
       <div className="flex flex-col gap-2">
         {match(listFilter)
           .with({ state: "loading" }, () => (
