@@ -1,3 +1,11 @@
+import openDB from "@/utils/idb";
+
+import FilterProtocol from "./messaging/filter";
+
 export default defineBackground(() => {
-  console.log('Hello background!', { id: browser.runtime.id });
+  FilterProtocol.onMessage("list", async () => {
+    const db = await openDB();
+    const filters = await db.getAll("filters");
+    return filters;
+  });
 });
