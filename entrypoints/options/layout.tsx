@@ -15,9 +15,11 @@
 // You should have received a copy of the GNU General Public License
 // along with content-block.  If not, see <https://www.gnu.org/licenses/>.
 
-import { Navbar, NavbarContent, NavbarItem } from "@heroui/react";
+import { Navbar, NavbarBrand, NavbarContent, NavbarItem } from "@heroui/react";
 import { useTranslation } from "react-i18next";
 import { Link, Outlet, useLocation } from "react-router";
+
+import icon from "@/assets/img/icon-default.svg";
 
 const OptionsLayout = () => {
   const { t } = useTranslation();
@@ -39,6 +41,11 @@ const OptionsLayout = () => {
   return (
     <div className="flex flex-col">
       <Navbar>
+        <NavbarBrand>
+          <div className="size-8">
+            <img alt="icon" src={icon} />
+          </div>
+        </NavbarBrand>
         <NavbarContent>
           {links.map(({ isActive, label, to }) => (
             <NavbarItem isActive={isActive} key={to}>
