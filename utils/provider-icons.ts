@@ -15,27 +15,17 @@
 // You should have received a copy of the GNU General Public License
 // along with content-block.  If not, see <https://www.gnu.org/licenses/>.
 
-import { createContext, FC, useEffect, useState } from "react";
-import z from "zod";
-import { en } from "zod/locales";
+import { IconType, SiGoogle, SiOpenai } from "@icons-pack/react-simple-icons";
 
-import ChildrenProps from "@/types/ChildrenProps";
+import { LLMProvider } from "@/types/llm";
 
-export const ZodContext = createContext<"zod" | null>(null);
-
-const ZodProvider: FC<ChildrenProps> = ({ children }) => {
-  const [isLoaded, setIsLoaded] = useState<"zod" | null>(null);
-
-  useEffect(() => {
-    z.config({
-      ...z.config(),
-      ...en(),
-    });
-
-    setIsLoaded("zod");
-  }, []);
-
-  return <ZodContext.Provider value={isLoaded}>{children}</ZodContext.Provider>;
+type ProviderIcon = {
+  [key in LLMProvider]: IconType;
 };
 
-export default ZodProvider;
+const ProviderIcon: ProviderIcon = {
+  google: SiGoogle,
+  openai: SiOpenai,
+};
+
+export default ProviderIcon;

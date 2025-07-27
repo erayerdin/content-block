@@ -22,14 +22,19 @@ import ChildrenProps from "@/types/ChildrenProps";
 
 import { I18NextContext } from "./I18NextProvider";
 import { IDBContext } from "./IDBProvider";
+import { WxtStorageContext } from "./WxtStorageProvider";
 import { ZodContext } from "./ZodProvider";
 
 const LoadingProvider: FC<ChildrenProps> = ({ children }) => {
   const idb = useContext(IDBContext);
   const i18next = useContext(I18NextContext);
   const zod = useContext(ZodContext);
+  const wxtStorage = useContext(WxtStorageContext);
 
-  const dependencies = useMemo(() => [i18next, idb, zod], [i18next, idb, zod]);
+  const dependencies = useMemo(
+    () => [i18next, idb, zod, wxtStorage],
+    [i18next, idb, zod, wxtStorage]
+  );
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {

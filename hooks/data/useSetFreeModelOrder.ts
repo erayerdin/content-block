@@ -15,27 +15,31 @@
 // You should have received a copy of the GNU General Public License
 // along with content-block.  If not, see <https://www.gnu.org/licenses/>.
 
-import { createContext, FC, useEffect, useState } from "react";
-import z from "zod";
-import { en } from "zod/locales";
+import { WxtStorage } from "#imports";
+import {
+  useMutation,
+  UseMutationResult,
+  useQueryClient,
+} from "@tanstack/react-query";
 
-import ChildrenProps from "@/types/ChildrenProps";
+import setFreeModelOrder from "@/actions/setFreeModelOrder";
+import { LLMModel } from "@/types/llm";
 
-export const ZodContext = createContext<"zod" | null>(null);
-
-const ZodProvider: FC<ChildrenProps> = ({ children }) => {
-  const [isLoaded, setIsLoaded] = useState<"zod" | null>(null);
-
-  useEffect(() => {
-    z.config({
-      ...z.config(),
-      ...en(),
-    });
-
-    setIsLoaded("zod");
-  }, []);
-
-  return <ZodContext.Provider value={isLoaded}>{children}</ZodContext.Provider>;
+type Params = {
+  storage: WxtStorage;
 };
 
-export default ZodProvider;
+type Return = UseMutationResult<void, unknown, LLMModel[]>;
+
+const useSetFreeModelOrder = ({ storage }: Params): Return => {
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: (models: LLMModel[]) => setFreeModelOrder({ models, storage }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["freeModelOrder"] });
+    },
+  });
+  return mutation;
+};
+
+export default useSetFreeModelOrder;

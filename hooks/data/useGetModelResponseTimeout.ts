@@ -15,27 +15,40 @@
 // You should have received a copy of the GNU General Public License
 // along with content-block.  If not, see <https://www.gnu.org/licenses/>.
 
-import { createContext, FC, useEffect, useState } from "react";
-import z from "zod";
-import { en } from "zod/locales";
+import { WxtStorage } from "#imports";
+import { useQuery } from "@tanstack/react-query";
 
-import ChildrenProps from "@/types/ChildrenProps";
+import getModelResponseTimeout from "@/actions/getModelResponseTimeout";
 
-export const ZodContext = createContext<"zod" | null>(null);
-
-const ZodProvider: FC<ChildrenProps> = ({ children }) => {
-  const [isLoaded, setIsLoaded] = useState<"zod" | null>(null);
-
-  useEffect(() => {
-    z.config({
-      ...z.config(),
-      ...en(),
-    });
-
-    setIsLoaded("zod");
-  }, []);
-
-  return <ZodContext.Provider value={isLoaded}>{children}</ZodContext.Provider>;
+type Params = {
+  storage: WxtStorage;
 };
 
-export default ZodProvider;
+type Return =
+  | {
+      data: number;
+      state: "loaded";
+    }
+  | {
+      data: undefined;
+      state: "loading";
+    };
+
+const useGetModelResponseTimeout = ({ storage }: Params): Return => {
+  const query = useQuery({
+    queryFn: () => getModelResponseTimeout({ storage }),
+    queryKey: ["modelResponseTimeout"],
+  });
+  if (query.isLoading) {
+    return {
+      data: undefined,
+      state: "loading",
+    };
+  }
+  return {
+    data: query.data!,
+    state: "loaded",
+  };
+};
+
+export default useGetModelResponseTimeout;

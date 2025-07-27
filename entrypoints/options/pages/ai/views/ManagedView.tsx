@@ -15,27 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with content-block.  If not, see <https://www.gnu.org/licenses/>.
 
-import { createContext, FC, useEffect, useState } from "react";
-import z from "zod";
-import { en } from "zod/locales";
-
-import ChildrenProps from "@/types/ChildrenProps";
-
-export const ZodContext = createContext<"zod" | null>(null);
-
-const ZodProvider: FC<ChildrenProps> = ({ children }) => {
-  const [isLoaded, setIsLoaded] = useState<"zod" | null>(null);
-
-  useEffect(() => {
-    z.config({
-      ...z.config(),
-      ...en(),
-    });
-
-    setIsLoaded("zod");
-  }, []);
-
-  return <ZodContext.Provider value={isLoaded}>{children}</ZodContext.Provider>;
+const ManagedView = () => {
+  return <div>ManagedView</div>;
 };
 
-export default ZodProvider;
+export default ManagedView;
