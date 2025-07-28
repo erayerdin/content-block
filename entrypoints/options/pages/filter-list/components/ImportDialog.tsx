@@ -26,7 +26,7 @@ import {
 } from "@heroui/react";
 import clsx from "clsx";
 import { ImportIcon } from "lucide-react";
-import { FC } from "react";
+import { FC, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { v7 as uuidV7 } from "uuid";
 

@@ -17,6 +17,7 @@
 
 import { Button, Tooltip } from "@heroui/react";
 import { CircleQuestionMarkIcon, FunnelIcon, PowerIcon } from "lucide-react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 const BottomBar = () => {
