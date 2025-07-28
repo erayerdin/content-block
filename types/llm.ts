@@ -16,7 +16,6 @@
 // along with content-block.  If not, see <https://www.gnu.org/licenses/>.
 
 import i18next from "i18next";
-import { match } from "ts-pattern";
 import * as z from "zod";
 
 export const LLMProviderTypes = ["free", "api"] as const;
@@ -55,13 +54,3 @@ export const LLMModelMessages: Record<LLMModel, string> = {
   "gpt-4.1-nano": "GPT-4.1 Nano",
   "gpt-4o": "GPT-4o",
 };
-export const getProviderByModel = (model: LLMModel): LLMProvider =>
-  match<LLMModel, LLMProvider>(model)
-    .with(
-      "gemini-2.5-flash",
-      "gemini-2.5-flash-lite",
-      "gemini-2.5-pro",
-      () => "google"
-    )
-    .with("gpt-4.1", "gpt-4.1-mini", "gpt-4.1-nano", "gpt-4o", () => "openai")
-    .exhaustive();

@@ -27,11 +27,6 @@ const OptionsLayout = () => {
 
   const links = [
     {
-      isActive: location.pathname.startsWith("/ai"),
-      label: t("ai"),
-      to: "/ai",
-    },
-    {
       isActive: location.pathname.startsWith("/filter"),
       label: t("filters"),
       to: "/filters",

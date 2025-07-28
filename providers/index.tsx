@@ -15,8 +15,6 @@
 // You should have received a copy of the GNU General Public License
 // along with content-block.  If not, see <https://www.gnu.org/licenses/>.
 
-/* eslint-disable react/jsx-max-depth */
-
 import { HeroUIProvider } from "@heroui/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { FC } from "react";
@@ -26,7 +24,6 @@ import ChildrenProps from "@/types/ChildrenProps";
 import I18NextProvider from "./I18NextProvider";
 import IDBProvider from "./IDBProvider";
 import LoadingProvider from "./LoadingProvider";
-import WxtStorageProvider from "./WxtStorageProvider";
 import ZodProvider from "./ZodProvider";
 
 const queryClient = new QueryClient();
@@ -38,9 +35,7 @@ const GlobalProvider: FC<ChildrenProps> = ({ children }) => {
         <IDBProvider>
           <I18NextProvider>
             <ZodProvider>
-              <WxtStorageProvider>
-                <LoadingProvider>{children}</LoadingProvider>
-              </WxtStorageProvider>
+              <LoadingProvider>{children}</LoadingProvider>
             </ZodProvider>
           </I18NextProvider>
         </IDBProvider>

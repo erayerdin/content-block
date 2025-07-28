@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with content-block.  If not, see <https://www.gnu.org/licenses/>.
 
-import { createContext, FC, useEffect, useState } from "react";
+import { createContext, FC } from "react";
 import z from "zod";
 import { en } from "zod/locales";
 

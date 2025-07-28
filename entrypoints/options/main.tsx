@@ -6,7 +6,6 @@ import GlobalProvider from "@/providers/index.tsx";
 
 import OptionsLayout from "./layout";
 import AboutPage from "./pages/about";
-import AIPage from "./pages/ai";
 import FilterEditorPage from "./pages/filter-editor";
 import FilterListPage from "./pages/filter-list";
 
@@ -17,7 +16,6 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         <Routes>
           <Route element={<OptionsLayout />}>
             <Route element={<Navigate replace to="/about" />} path="/" />
-            <Route element={<AIPage />} path="/ai" />
             <Route element={<FilterListPage />} path="/filters" />
             <Route element={<FilterEditorPage />} path="/filter/:id" />
             <Route element={<AboutPage />} path="/about" />
