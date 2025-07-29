@@ -24,14 +24,16 @@ import {
   Chip,
   Divider,
   Spinner,
+  Tooltip,
 } from "@heroui/react";
-import { PenIcon, PlusIcon } from "lucide-react";
+import slug from "limax";
+import { DownloadIcon, PenIcon, PlusIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
 import { match } from "ts-pattern";
 
 import useListFilter from "@/hooks/data/useListFilter";
-import { defaultFilter } from "@/types/filter";
+import { defaultFilter, Filter } from "@/types/filter";
 
 import DeletionDialog from "./components/DeletionDialog";
 import ImportDialog from "./components/ImportDialog";
@@ -41,6 +43,22 @@ const FilterListPage = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const listFilter = useListFilter({ idb });
+
+  const exportFilter = (filter: Filter) => {
+    const filename = slug(filter.title) + ".json";
+    const json = JSON.stringify(filter);
+    const blob = new Blob([json], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    document.body.appendChild(a);
+    a.style.display = "none";
+    a.href = url;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(url);
+    document.body.removeChild(a);
+    a.remove();
+  };
 
   return (
     <div className="flex flex-col gap-4">
@@ -78,15 +96,29 @@ const FilterListPage = () => {
                       <p>{filter.description}</p>
                     </div>
                     <div className="flex gap-2">
-                      <button
-                        onClick={async () => {
-                          await navigate(`/filter/${filter.id}`);
-                        }}
-                        type="button"
-                      >
-                        <PenIcon />
-                      </button>
-                      <DeletionDialog filter={filter} />
+                      <Tooltip content={t("export_filter")}>
+                        <button
+                          onClick={() => {
+                            exportFilter(filter);
+                          }}
+                          type="button"
+                        >
+                          <DownloadIcon />
+                        </button>
+                      </Tooltip>
+                      <Tooltip content={t("edit_filter")}>
+                        <button
+                          onClick={async () => {
+                            await navigate(`/filter/${filter.id}`);
+                          }}
+                          type="button"
+                        >
+                          <PenIcon />
+                        </button>
+                      </Tooltip>
+                      <Tooltip content={t("remove_filter")}>
+                        <DeletionDialog filter={filter} />
+                      </Tooltip>
                     </div>
                   </CardHeader>
                   <Divider />

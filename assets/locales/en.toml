@@ -43,3 +43,6 @@ view_license_description = "{{name}} is open source and licensed under {{license
 ai = "AI"
 configure_ai = "Configure AI"
 google_ai_studio_key = "Google AI Studio Key"
+remove_filter = "Remove Filter"
+edit_filter = "Edit Filter"
+export_filter = "Export Filter"
