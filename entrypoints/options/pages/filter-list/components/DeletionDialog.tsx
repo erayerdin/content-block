@@ -24,7 +24,7 @@ import {
   ModalHeader,
 } from "@heroui/react";
 import { XIcon } from "lucide-react";
-import { FC } from "react";
+import { FC, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import useDeleteFilter from "@/hooks/data/useDeleteFilter";
