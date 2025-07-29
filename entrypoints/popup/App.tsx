@@ -16,7 +16,12 @@
 // along with content-block.  If not, see <https://www.gnu.org/licenses/>.
 
 import { Button, Tooltip } from "@heroui/react";
-import { CircleQuestionMarkIcon, FunnelIcon, PowerIcon } from "lucide-react";
+import {
+  CircleQuestionMarkIcon,
+  FunnelIcon,
+  PowerIcon,
+  SparkleIcon,
+} from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -25,6 +30,19 @@ const BottomBar = () => {
 
   return (
     <div className="flex gap-4 justify-evenly bg-gray-300 py-2">
+      <Tooltip content={t("configure_ai")}>
+        <button
+          onClick={() => {
+            browser.tabs.create({
+              // @ts-expect-error - This asks for a PublicPath but it still works.
+              url: browser.runtime.getURL("options.html#/ai"),
+            });
+          }}
+          type="button"
+        >
+          <SparkleIcon size={20} />
+        </button>
+      </Tooltip>
       <Tooltip content={t("view_and_edit_filters")}>
         <button
           onClick={() => {
