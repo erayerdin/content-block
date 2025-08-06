@@ -15,31 +15,11 @@
 // You should have received a copy of the GNU General Public License
 // along with content-block.  If not, see <https://www.gnu.org/licenses/>.
 
-import { createContext, FC, useEffect, useState } from "react";
-
-import ChildrenProps from "@/types/ChildrenProps";
-import initI18Next from "@/utils/i18next";
-
-export const I18NextContext = createContext<"i18next" | null>(null);
-
-const I18NextProvider: FC<ChildrenProps> = ({ children }) => {
-  const [isLoaded, setIsLoaded] = useState<"i18next" | null>(null);
-
-  useEffect(() => {
-    initI18Next()
-      .then(() => {
-        setIsLoaded("i18next");
-      })
-      .catch((e) => {
-        throw e;
-      });
-  }, []);
-
-  return (
-    <I18NextContext.Provider value={isLoaded}>
-      {children}
-    </I18NextContext.Provider>
-  );
+const stringToSha256 = async (content: string): Promise<string> => {
+  const msgBuffer = new TextEncoder().encode(content);
+  const hashBuffer = await crypto.subtle.digest("SHA-256", msgBuffer);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
 };
 
-export default I18NextProvider;
+export default stringToSha256;

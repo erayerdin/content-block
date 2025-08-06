@@ -15,31 +15,49 @@
 // You should have received a copy of the GNU General Public License
 // along with content-block.  If not, see <https://www.gnu.org/licenses/>.
 
+import AIProtocol from "./messaging/ai";
 import FilterProtocol from "./messaging/filter";
 
 export default defineContentScript({
   main: async () => {
-    console.log("Add border script.");
-
-    const filters = await FilterProtocol.sendMessage("list", undefined);
-    const url = window.location.href;
-    const matching = filters.filter((f) =>
-      f.domains.some((pattern) => {
+    const observer = new MutationObserver(async () => {
+      const matchPattern = (pattern: string): boolean => {
         try {
           return new RegExp(pattern).test(url);
         } catch {
           return false;
         }
-      })
-    );
-    const selectors = matching.flatMap((f) => f.selectors);
-    selectors.forEach((selector) => {
-      document.querySelectorAll(selector).forEach((elm) => {
-        if (elm instanceof HTMLElement) {
-          elm.style.border = "1px solid red";
-        }
+      };
+
+      const filters = await FilterProtocol.sendMessage("list", undefined);
+      const url = window.location.href;
+      const matching = filters.filter((f) => f.domains.some(matchPattern));
+
+      matching.forEach(async ({ prompt, selectors }) => {
+        const elements = selectors
+          .flatMap((selector) =>
+            Array.from(document.querySelectorAll(selector))
+          )
+          .filter((elm) => elm instanceof HTMLElement);
+
+        elements.forEach(async (elm) => {
+          const content = elm.textContent;
+          if (content) {
+            const result = await AIProtocol.sendMessage("analyze", {
+              content,
+              prompt,
+              provider: "google",
+            });
+
+            if (result) {
+              elm.style.border = "2px solid red";
+            }
+          }
+        });
       });
     });
+
+    observer.observe(document, { childList: true, subtree: true });
   },
   matches: ["<all_urls>"],
 });

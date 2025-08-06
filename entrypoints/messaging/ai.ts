@@ -15,31 +15,22 @@
 // You should have received a copy of the GNU General Public License
 // along with content-block.  If not, see <https://www.gnu.org/licenses/>.
 
-import { createContext, FC, useEffect, useState } from "react";
+import { defineExtensionMessaging } from "@webext-core/messaging";
 
-import ChildrenProps from "@/types/ChildrenProps";
-import initI18Next from "@/utils/i18next";
+import { LLMProvider } from "@/types/llm";
 
-export const I18NextContext = createContext<"i18next" | null>(null);
-
-const I18NextProvider: FC<ChildrenProps> = ({ children }) => {
-  const [isLoaded, setIsLoaded] = useState<"i18next" | null>(null);
-
-  useEffect(() => {
-    initI18Next()
-      .then(() => {
-        setIsLoaded("i18next");
-      })
-      .catch((e) => {
-        throw e;
-      });
-  }, []);
-
-  return (
-    <I18NextContext.Provider value={isLoaded}>
-      {children}
-    </I18NextContext.Provider>
-  );
+type AIProtocolMap = {
+  analyze: ({
+    content,
+    prompt,
+    provider,
+  }: {
+    content: string;
+    prompt: string;
+    provider: LLMProvider;
+  }) => Promise<boolean>;
 };
 
-export default I18NextProvider;
+const AIProtocol = defineExtensionMessaging<AIProtocolMap>();
+
+export default AIProtocol;

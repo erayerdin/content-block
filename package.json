@@ -27,6 +27,7 @@
     "lint:fix": "eslint . --fix"
   },
   "dependencies": {
+    "@google/genai": "^1.11.0",
     "@heroui/react": "^2.8.1",
     "@icons-pack/react-simple-icons": "^13.6.0",
     "@tailwindcss/vite": "^4.1.11",

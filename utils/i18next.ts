@@ -15,31 +15,29 @@
 // You should have received a copy of the GNU General Public License
 // along with content-block.  If not, see <https://www.gnu.org/licenses/>.
 
-import { createContext, FC, useEffect, useState } from "react";
+import i18n, { ResourceKey } from "i18next";
+import LanguageDetector from "i18next-browser-languagedetector";
+import { initReactI18next } from "react-i18next";
 
-import ChildrenProps from "@/types/ChildrenProps";
-import initI18Next from "@/utils/i18next";
+import enTranslation from "@/assets/locales/en.toml";
 
-export const I18NextContext = createContext<"i18next" | null>(null);
-
-const I18NextProvider: FC<ChildrenProps> = ({ children }) => {
-  const [isLoaded, setIsLoaded] = useState<"i18next" | null>(null);
-
-  useEffect(() => {
-    initI18Next()
-      .then(() => {
-        setIsLoaded("i18next");
-      })
-      .catch((e) => {
-        throw e;
-      });
-  }, []);
-
-  return (
-    <I18NextContext.Provider value={isLoaded}>
-      {children}
-    </I18NextContext.Provider>
-  );
+const initI18Next = () => {
+  return i18n
+    .use(initReactI18next)
+    .use(LanguageDetector)
+    .init({
+      fallbackLng: "en",
+      interpolation: {
+        escapeValue: false,
+      },
+      lng: "en",
+      resources: {
+        en: {
+          translation: enTranslation as ResourceKey,
+        },
+      },
+      supportedLngs: ["en"],
+    });
 };
 
-export default I18NextProvider;
+export default initI18Next;

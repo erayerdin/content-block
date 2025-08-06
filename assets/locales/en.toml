@@ -46,3 +46,12 @@ google_ai_studio_key = "Google AI Studio Key"
 remove_filter = "Remove Filter"
 edit_filter = "Edit Filter"
 export_filter = "Export Filter"
+analyze_content_prompt = """
+{{prompt}}
+
+I want you to analyze the following content. Respond with only `true` or `false`. Your response must be a valid JSON value.
+
+```
+{{content}}
+```
+"""
