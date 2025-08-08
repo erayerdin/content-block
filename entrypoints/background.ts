@@ -1,6 +1,7 @@
 import { storage } from "#imports";
 
 import analyze from "@/actions/analyze";
+import checkEnabled from "@/actions/checkEnabled";
 import openDB from "@/utils/idb";
 
 import AIProtocol from "./messaging/ai";
@@ -16,6 +17,17 @@ export default defineBackground(() => {
   AIProtocol.onMessage(
     "analyze",
     async ({ data: { content, prompt, provider } }) => {
+      const enabled = await checkEnabled({ storage });
+
+      if (enabled === false) {
+        console.warn("Extension is disabled. Skipping analysis.");
+        return false;
+      }
+
+      if (enabled === null) {
+        throw new Error("Failed to check if extension is enabled.");
+      }
+
       const key = await storage.getItem<string>("local:google_ai_studio_key");
 
       if (key === null) {

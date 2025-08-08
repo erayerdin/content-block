@@ -25,6 +25,8 @@ import {
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import useEnableToggle from "@/hooks/data/useEnableToggle";
+
 const BottomBar = () => {
   const { t } = useTranslation();
 
@@ -75,6 +77,7 @@ const BottomBar = () => {
 
 const App = () => {
   const [url, setURL] = useState<URL>(new URL("https://www.foobar.com"));
+  const { enabled, toggle } = useEnableToggle();
 
   return (
     <div className="flex flex-col items-stretch justify-between h-full">
@@ -83,10 +86,8 @@ const App = () => {
         <div className="flex flex-col gap-4 items-center">
           <Button
             className="text-white size-16"
-            onPress={() => {
-              // TODO: Implement this
-              throw new Error("Not implemented");
-            }}
+            color={enabled ? "success" : undefined}
+            onPress={toggle}
             type="button"
             variant="shadow"
           >
