@@ -15,16 +15,16 @@
 // You should have received a copy of the GNU General Public License
 // along with content-block.  If not, see <https://www.gnu.org/licenses/>.
 
-import { Button, Tooltip } from "@heroui/react";
+import { Button, Chip, Tooltip } from "@heroui/react";
 import {
   CircleQuestionMarkIcon,
   FunnelIcon,
   PowerIcon,
   SparkleIcon,
 } from "lucide-react";
-import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import useCurrentURL from "@/hooks/data/useCurrentURL";
 import useEnableToggle from "@/hooks/data/useEnableToggle";
 
 const BottomBar = () => {
@@ -76,7 +76,7 @@ const BottomBar = () => {
 };
 
 const App = () => {
-  const [url, setURL] = useState<URL>(new URL("https://www.foobar.com"));
+  const url = useCurrentURL();
   const { enabled, toggle } = useEnableToggle();
 
   return (
@@ -93,7 +93,7 @@ const App = () => {
           >
             <PowerIcon />
           </Button>
-          <p>{url.hostname}</p>
+          {url ? <Chip>{url.hostname}</Chip> : null}
         </div>
       </div>
       <BottomBar />

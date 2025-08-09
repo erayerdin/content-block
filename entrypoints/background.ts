@@ -2,14 +2,17 @@ import { storage } from "#imports";
 
 import analyze from "@/actions/analyze";
 import checkEnabled from "@/actions/checkEnabled";
+import setCurrentURL from "@/actions/setCurrentURL";
 import openDB from "@/utils/idb";
 
 import AIProtocol from "./messaging/ai";
 import FilterProtocol from "./messaging/filter";
+import URLProtocol from "./messaging/url";
 
-export default defineBackground(() => {
+export default defineBackground(async () => {
+  const db = await openDB();
+
   FilterProtocol.onMessage("list", async () => {
-    const db = await openDB();
     const filters = await db.getAll("filters");
     return filters;
   });
@@ -37,4 +40,8 @@ export default defineBackground(() => {
       return analyze({ content, prompt, provider: { key, type: provider } });
     }
   );
+
+  URLProtocol.onMessage("set", async ({ data: url }) => {
+    setCurrentURL({ storage, url });
+  });
 });
