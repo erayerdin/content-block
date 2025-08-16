@@ -15,16 +15,14 @@
 // You should have received a copy of the GNU General Public License
 // along with content-block.  If not, see <https://www.gnu.org/licenses/>.
 
-import OllamaConfigSection from "./sections/OllamaConfigSection";
-import OllamaModelConfigSection from "./sections/OllamaModelConfigSection";
+import { Ollama } from "ollama";
+import { useContext } from "react";
 
-const AIPage = () => {
-  return (
-    <div className="flex flex-col gap-4 py-4">
-      <OllamaConfigSection />
-      <OllamaModelConfigSection />
-    </div>
-  );
+import { OllamaContext } from "@/providers/OllamaProvider";
+
+const useOllama = (): null | Ollama => {
+  const ollama = useContext(OllamaContext);
+  return ollama;
 };
 
-export default AIPage;
+export default useOllama;

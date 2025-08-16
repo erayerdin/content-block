@@ -15,16 +15,27 @@
 // You should have received a copy of the GNU General Public License
 // along with content-block.  If not, see <https://www.gnu.org/licenses/>.
 
-import OllamaConfigSection from "./sections/OllamaConfigSection";
-import OllamaModelConfigSection from "./sections/OllamaModelConfigSection";
+import { useQuery } from "@tanstack/react-query";
 
-const AIPage = () => {
-  return (
-    <div className="flex flex-col gap-4 py-4">
-      <OllamaConfigSection />
-      <OllamaModelConfigSection />
-    </div>
-  );
+import getModel from "@/actions/getModel";
+import Model, { models } from "@/types/model";
+
+const useModel = (tag: string): Model => {
+  const ollama = useOllama();
+  const query = useQuery<Model>({
+    queryFn: () => getModel({ ollama, tag }),
+    queryKey: ["ollama", "model", tag],
+  });
+
+  const localModel = models.find(({ tag: t }) => t === tag);
+
+  if (localModel === undefined) {
+    throw new Error(
+      `Local model does not exist for ${tag}. Possibly unsupported model.`
+    );
+  }
+
+  return query.data ?? localModel;
 };
 
-export default AIPage;
+export default useModel;

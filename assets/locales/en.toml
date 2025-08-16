@@ -55,3 +55,11 @@ I want you to analyze the following content. Respond with only `true` or `false`
 {{content}}
 ```
 """
+ollama_configuration = "Ollama Configuration"
+ollama_api_host = "Ollama API Host"
+ollama_api_port = "Ollama API Port"
+ollama_model_configuration = "Ollama Model Configuration"
+tokens = "tokens"
+knowledge_cutoff_date_is_date = "Knowledge cutoff date is {{date}}."
+context_window_length = "Context Window Length"
+model_size = "Model Size"

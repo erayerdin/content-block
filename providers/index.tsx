@@ -26,6 +26,7 @@ import ChildrenProps from "@/types/ChildrenProps";
 import I18NextProvider from "./I18NextProvider";
 import IDBProvider from "./IDBProvider";
 import LoadingProvider from "./LoadingProvider";
+import OllamaProvider from "./OllamaProvider";
 import WxtStorageProvider from "./WxtStorageProvider";
 import ZodProvider from "./ZodProvider";
 
@@ -39,7 +40,9 @@ const GlobalProvider: FC<ChildrenProps> = ({ children }) => {
           <I18NextProvider>
             <ZodProvider>
               <WxtStorageProvider>
-                <LoadingProvider>{children}</LoadingProvider>
+                <OllamaProvider>
+                  <LoadingProvider>{children}</LoadingProvider>
+                </OllamaProvider>
               </WxtStorageProvider>
             </ZodProvider>
           </I18NextProvider>

@@ -15,16 +15,18 @@
 // You should have received a copy of the GNU General Public License
 // along with content-block.  If not, see <https://www.gnu.org/licenses/>.
 
-import OllamaConfigSection from "./sections/OllamaConfigSection";
-import OllamaModelConfigSection from "./sections/OllamaModelConfigSection";
+import Model from "@/types/model";
 
-const AIPage = () => {
-  return (
-    <div className="flex flex-col gap-4 py-4">
-      <OllamaConfigSection />
-      <OllamaModelConfigSection />
-    </div>
-  );
+import useModel from "./useModel";
+
+const useModels = (): Model[] => {
+  const models = [
+    useModel("llama3.1:8b"),
+    useModel("llama3.2:1b"),
+    useModel("llama3.2:3b"),
+  ];
+
+  return models;
 };
 
-export default AIPage;
+export default useModels;

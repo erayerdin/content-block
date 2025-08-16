@@ -31,7 +31,10 @@ const WxtStorageProvider: FC<ChildrenProps> = ({ children }) => {
       const localSnapshot = await storage.snapshot("local");
       await storage.setItems([
         { key: "local:google_ai_studio_key", value: "" },
-        { key: "local:enabled", value: true },
+        { key: "session:enabled", value: true },
+        { key: "local:ollama_host", value: "localhost" },
+        { key: "local:ollama_port", value: 11434 },
+        { key: "local:selected_model", value: null },
       ]);
       await storage.restoreSnapshot("local", localSnapshot);
       setState("wxtStorage");
