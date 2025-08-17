@@ -18,9 +18,9 @@
 import { useQuery } from "@tanstack/react-query";
 
 import getModel from "@/actions/getModel";
-import Model, { models } from "@/types/model";
+import Model, { models, Tag } from "@/types/model";
 
-const useModel = (tag: string): Model => {
+const useModel = (tag: Tag): Model => {
   const ollama = useOllama();
   const query = useQuery<Model>({
     queryFn: () => getModel({ ollama, tag }),

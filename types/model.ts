@@ -15,10 +15,13 @@
 // You should have received a copy of the GNU General Public License
 // along with content-block.  If not, see <https://www.gnu.org/licenses/>.
 
-type Model = {
+export type OllamaTag = "llama3.1:8b" | "llama3.2:1b" | "llama3.2:3b";
+// eslint-disable-next-line sonarjs/redundant-type-aliases
+export type Tag = OllamaTag;
+
+type BaseModel = {
   ctxWindowLength: number;
   knowledgeCutoff: Date;
-  location: "ollama";
   size: number;
   status:
     | {
@@ -31,11 +34,13 @@ type Model = {
     | {
         state: "not-downloaded";
       };
-  tag: string;
   title: string;
 };
+// eslint-disable-next-line sonarjs/redundant-type-aliases
+type Model = OllamaModel;
+type OllamaModel = BaseModel & { location: "ollama"; tag: OllamaTag };
 
-const Llama3p1a8b: Model = {
+const Llama3p1a8b: OllamaModel = {
   ctxWindowLength: 128000,
   knowledgeCutoff: new Date("2023-12-31"),
   location: "ollama",
@@ -45,9 +50,9 @@ const Llama3p1a8b: Model = {
   },
   tag: "llama3.1:8b",
   title: "Llama 3.1 8B",
-};
+} as const;
 
-const Llama3p2a1b: Model = {
+const Llama3p2a1b: OllamaModel = {
   ctxWindowLength: 128000,
   knowledgeCutoff: new Date("2023-12-31"),
   location: "ollama",
@@ -57,9 +62,9 @@ const Llama3p2a1b: Model = {
   },
   tag: "llama3.2:1b",
   title: "Llama 3.2 1B",
-};
+} as const;
 
-const Llama3p2a3b: Model = {
+const Llama3p2a3b: OllamaModel = {
   ctxWindowLength: 128000,
   knowledgeCutoff: new Date("2023-12-31"),
   location: "ollama",
@@ -69,8 +74,8 @@ const Llama3p2a3b: Model = {
   },
   tag: "llama3.2:3b",
   title: "Llama 3.2 3B",
-};
+} as const;
 
-export const models = [Llama3p1a8b, Llama3p2a1b, Llama3p2a3b];
+export const models: Model[] = [Llama3p1a8b, Llama3p2a1b, Llama3p2a3b] as const;
 
 export default Model;

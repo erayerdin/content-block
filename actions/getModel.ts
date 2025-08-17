@@ -17,11 +17,11 @@
 
 import { Ollama } from "ollama";
 
-import Model, { models as _models } from "@/types/model";
+import Model, { models as _models, OllamaTag } from "@/types/model";
 
 type Params = {
   ollama: null | Ollama;
-  tag: string;
+  tag: OllamaTag;
 };
 
 const getModel = async ({ ollama, tag }: Params): Promise<Model> => {
