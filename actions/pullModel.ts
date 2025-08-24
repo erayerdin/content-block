@@ -16,7 +16,7 @@
 // along with content-block.  If not, see <https://www.gnu.org/licenses/>.
 
 import { QueryClient } from "@tanstack/react-query";
-import { Ollama } from "ollama";
+import { Ollama } from "ollama/browser";
 
 import Model, { models } from "@/types/model";
 

@@ -46,7 +46,6 @@ export default defineContentScript({
             const result = await AIProtocol.sendMessage("analyze", {
               content,
               prompt,
-              provider: "google",
             });
 
             if (result) {

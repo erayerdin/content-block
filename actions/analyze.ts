@@ -15,90 +15,50 @@
 // You should have received a copy of the GNU General Public License
 // along with content-block.  If not, see <https://www.gnu.org/licenses/>.
 
-import { GoogleGenAI } from "@google/genai";
+import { storage } from "#imports";
 import { match } from "ts-pattern";
 
-import { LLMProvider } from "@/types/llm";
-import stringToSha256 from "@/utils/crypto";
-import initI18Next from "@/utils/i18next";
-import openDB from "@/utils/idb";
+import Model, { OllamaModel } from "@/types/model";
+import initOllama from "@/utils/ollama";
 
-const getFromCache = async (content: string): Promise<boolean | undefined> => {
-  const hash = await stringToSha256(content);
-  const idb = await openDB();
-  const val: boolean | undefined = await idb.get("results", hash);
-  return val;
-};
-
-const putToCache = async (content: string, result: boolean): Promise<void> => {
-  const hash = await stringToSha256(content);
-  const idb = await openDB();
-  await idb.put("results", result, hash);
-};
-
-const analyzeWithGemini = async ({
-  content,
-  key,
-  prompt,
-}: {
+type AnalyzeWithOllamaParams = {
   content: string;
-  key: string;
+  model: OllamaModel;
   prompt: string;
-}): Promise<boolean> => {
-  const _result = await getFromCache(content);
+};
 
-  if (_result !== undefined) {
-    return _result;
+const analyzeWithOllama = async ({
+  content,
+  model,
+  prompt,
+}: AnalyzeWithOllamaParams): Promise<boolean> => {
+  const ollama = await initOllama({ storage });
+
+  if (ollama === null) {
+    throw new Error(`Ollama is not initialized. Cannot analyze content.`);
   }
 
-  const ai = new GoogleGenAI({
-    apiKey: key,
+  const { response: raw } = await ollama.generate({
+    format: "json",
+    model: model.tag,
+    prompt: `${prompt}\n\n${content}`,
+    stream: false,
   });
-  const t = await initI18Next();
-
-  const response = await ai.models.generateContent({
-    config: {
-      responseMimeType: "application/json",
-      responseSchema: {
-        type: "boolean",
-      },
-    },
-    contents: t("analyze_content_prompt", { content, prompt }),
-    model: "gemini-2.5-flash-lite",
-  });
-
-  const text = response.text;
-
-  if (text === undefined) {
-    console.error("Gemini response is undefined.");
-    return false;
-  }
-
-  const result: boolean = JSON.parse(text);
-  await putToCache(content, result);
-  return result;
+  const response: boolean = JSON.parse(raw);
+  return response;
 };
 
 type Params = {
   content: string;
+  model: Model;
   prompt: string;
-  provider: {
-    key: string;
-    type: LLMProvider;
-  };
 };
 
-const analyze = ({ content, prompt, provider }: Params): Promise<boolean> => {
+const analyze = (params: Params): Promise<boolean> => {
   console.log("Analyzing content...");
 
-  return match(provider)
-    .with({ type: "google" }, ({ key }) =>
-      analyzeWithGemini({ content, key, prompt })
-    )
-    .with({ type: "openai" }, () => {
-      // TODO implement later
-      throw new Error("Not implemented");
-    })
+  return match(params)
+    .with({ model: { location: "ollama" } }, analyzeWithOllama)
     .exhaustive();
 };
 

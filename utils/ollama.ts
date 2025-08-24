@@ -15,14 +15,32 @@
 // You should have received a copy of the GNU General Public License
 // along with content-block.  If not, see <https://www.gnu.org/licenses/>.
 
+import { WxtStorage } from "#imports";
 import { Ollama } from "ollama/browser";
-import { useContext } from "react";
 
-import { OllamaContext } from "@/providers/OllamaProvider";
+type Params = {
+  storage: WxtStorage;
+};
 
-const useOllama = (): null | Ollama => {
-  const ollama = useContext(OllamaContext);
+export const initOllama = async ({
+  storage,
+}: Params): Promise<null | Ollama> => {
+  console.log("Initializing Ollama...");
+  const host =
+    (await storage.getItem<string>("local:ollama_host")) ?? "localhost";
+  const port = (await storage.getItem<number>("local:ollama_port")) ?? 11434;
+  const addr = `http://${host}:${port}`;
+
+  const response = await fetch(addr);
+  const text = await response.text();
+
+  if (text !== "Ollama is running") {
+    console.error("Ollama does not respond fine.", response, addr);
+    return null;
+  }
+
+  const ollama = new Ollama({ host: addr });
   return ollama;
 };
 
-export default useOllama;
+export default initOllama;

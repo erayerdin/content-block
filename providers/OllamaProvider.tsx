@@ -15,10 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with content-block.  If not, see <https://www.gnu.org/licenses/>.
 
-import { Ollama } from "ollama";
-import { createContext, FC } from "react";
+import { Ollama } from "ollama/browser";
+import { createContext, FC, useEffect, useState } from "react";
 
-import useGetStorageItem from "@/hooks/data/useGetStorageItem";
 import useWxtStorage from "@/hooks/useWxtStorage";
 import ChildrenProps from "@/types/ChildrenProps";
 
@@ -26,34 +25,16 @@ export const OllamaContext = createContext<null | Ollama>(null);
 
 const OllamaProvider: FC<ChildrenProps> = ({ children }) => {
   const storage = useWxtStorage();
-  const { data: ollamaHost } = useGetStorageItem<string>({
-    key: "local:ollama_host",
-    storage,
-  });
-  const { data: ollamaPort } = useGetStorageItem<number>({
-    key: "local:ollama_port",
-    storage,
-  });
-  const [state, setState] = useState<null | Ollama>(null);
+  const [ollama, setOllama] = useState<null | Ollama>(null);
 
   useEffect(() => {
-    const host = ollamaHost ?? "localhost";
-    const port = ollamaPort ?? 11434;
-    const addr = `http://${host}:${port}`;
-    const ollama = new Ollama({ host: addr });
-
-    fetch(addr).then(async (res) => {
-      const text = (await res.text()).trim();
-      if (text === "Ollama is running") {
-        setState(ollama);
-      }
-    });
-
-    setState(ollama);
-  }, [ollamaHost, ollamaPort]);
+    (async () => {
+      setOllama(await initOllama({ storage }));
+    })();
+  }, [storage]);
 
   return (
-    <OllamaContext.Provider value={state}>{children}</OllamaContext.Provider>
+    <OllamaContext.Provider value={ollama}>{children}</OllamaContext.Provider>
   );
 };
 

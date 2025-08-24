@@ -16,7 +16,7 @@
 // along with content-block.  If not, see <https://www.gnu.org/licenses/>.
 
 import { Card, CardBody, CardHeader, Input } from "@heroui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import z from "zod";
 
@@ -54,6 +54,11 @@ const OllamaConfigSection = () => {
     PortSchema.safeParse(ollamaPort)
   );
 
+  useEffect(() => {
+    setHostResult(HostSchema.safeParse(ollamaHost));
+    setPortResult(PortSchema.safeParse(ollamaPort));
+  }, [ollamaHost, ollamaPort]);
+
   const handleSave = (type: "host" | "port") => {
     return (val: string) => {
       const value = val.trim();
@@ -82,7 +87,7 @@ const OllamaConfigSection = () => {
       <CardBody className="gap-2">
         <div className="flex flex-col sm:flex-row gap-2">
           <Input
-            defaultValue={ollamaHost ?? ""}
+            defaultValue={ollamaHost ?? "localhost"}
             errorMessage={
               hostResult.success === false
                 ? z.treeifyError(hostResult.error).errors[0]

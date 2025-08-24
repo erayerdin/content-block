@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with content-block.  If not, see <https://www.gnu.org/licenses/>.
 
-import { Ollama } from "ollama";
+import { Ollama } from "ollama/browser";
 
 import Model, { models as _models, OllamaTag } from "@/types/model";
 

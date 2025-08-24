@@ -15,10 +15,11 @@
 // You should have received a copy of the GNU General Public License
 // along with content-block.  If not, see <https://www.gnu.org/licenses/>.
 
+export type OllamaModel = BaseModel & { location: "ollama"; tag: OllamaTag };
 export type OllamaTag = "llama3.1:8b" | "llama3.2:1b" | "llama3.2:3b";
+
 // eslint-disable-next-line sonarjs/redundant-type-aliases
 export type Tag = OllamaTag;
-
 type BaseModel = {
   ctxWindowLength: number;
   knowledgeCutoff: Date;
@@ -38,7 +39,6 @@ type BaseModel = {
 };
 // eslint-disable-next-line sonarjs/redundant-type-aliases
 type Model = OllamaModel;
-type OllamaModel = BaseModel & { location: "ollama"; tag: OllamaTag };
 
 const Llama3p1a8b: OllamaModel = {
   ctxWindowLength: 128000,

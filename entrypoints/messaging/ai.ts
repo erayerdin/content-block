@@ -17,17 +17,13 @@
 
 import { defineExtensionMessaging } from "@webext-core/messaging";
 
-import { LLMProvider } from "@/types/llm";
-
 type AIProtocolMap = {
   analyze: ({
     content,
     prompt,
-    provider,
   }: {
     content: string;
     prompt: string;
-    provider: LLMProvider;
   }) => Promise<boolean>;
 };
 
